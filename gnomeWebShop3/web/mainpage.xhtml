@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    
+    <h:head>
+        <title>Main page</title>
+    </h:head>
+    <h:body>
+         <h4>Welcome <h:outputText value="#{userManager.userName}"/></h4>
+         <h:form>
+             <h:commandButton value="Logout" action="#{userManager.LogOut}"/>
+             <h:commandButton value="Display gnomes" action="#{userManager.displayItems}"/>
+             <h:commandButton value="Display Shopping Basket" action="#{userManager.displayShopping}"/>
+             <hr/>
+         
+         
+         <c:choose>
+            <c:when test="#{userManager.displayShoppingTrue}">
+                <hr/>
+                Shopping basket
+                <hr/>
+               <h:dataTable value="#{userManager.shoppingList}" var ="o">
+                 <h:column>
+                     <f:facet name="header">G.Name</f:facet>
+                     #{o.gnomeName}
+                 </h:column>
+                
+                 <h:column>
+                     <f:facet name="header">G.Unit</f:facet>
+                     #{o.gnomeUnit}
+                 </h:column>
+                </h:dataTable>
+               <h:commandButton value="Pay" action="#{userManager.payShopping}"/>
+               
+            </c:when>
+         </c:choose>
+             
+             <c:choose>
+                   <c:when test="#{userManager.displayPayError}">
+                       <h4><h:outputText value="Erro: They quntity of gnomes in the shopping basket is less than the avilable in the inventor!"/></h4>
+                   </c:when>
+               </c:choose>
+               <c:choose>
+                   <c:when test="#{userManager.displayPaySuccess}">
+                       <h4><h:outputText value="Payment has been successfully done!"/></h4>
+                   </c:when>
+               </c:choose>
+         
+         <hr/>
+         <c:choose>
+            <c:when test="#{userManager.displayItemTrue}">
+               <h:dataTable value="#{userManager.list}" var ="o">
+                 <h:column>
+                     <f:facet name="header">G.Name</f:facet>
+                     #{o.gnomeName}
+                 </h:column>
+                 <h:column>
+                     <f:facet name="header">G.Price</f:facet>
+                     #{o.gnomePrice}
+                 </h:column>
+                 <h:column>
+                     <f:facet name="header">G.Unit</f:facet>
+                     #{o.gnomeUnit}
+                 </h:column>
+                </h:dataTable>
+                
+                <hr/>
+                you can choose gnome to add to your shopping basket
+                <hr/>
+                <h:outputLabel for="gnomeList" value="Gnome: "/>
+                <h:selectOneMenu value="#{userManager.selectedGnome}" id="gnomeList">
+   			<f:selectItems value="#{userManager.list}" var="c"
+   			itemLabel="#{c.gnomeName}" itemValue="#{c.gnomeName}" />
+   		</h:selectOneMenu>
+                <h:outputLabel for="gnomeUnits" value="Number of units: "/>
+                <h:inputText id="gnomeUnits" value="#{userManager.selectedGnomeUnit}">
+                    <f:validateLongRange minimum="1"/>
+                </h:inputText>
+                <h:commandButton value="Add to Shopping basket" action="#{userManager.addToShopping}"/>
+                <c:choose>
+                    <c:when test="#{userManager.displayShoppingError}">
+                        <h4><h:outputText value="Available unit of this gnome is less that your request!"/></h4>
+                    </c:when>
+                </c:choose>
+                <hr/>
+                
+            </c:when>
+         </c:choose>
+         
+         
+         
+         </h:form>    
+         
+    </h:body>
+</html>
+

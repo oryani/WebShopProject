@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>User registration page</title>
+    </h:head>
+    <h:body>
+        <h:form id="register"> 
+            
+            <h3>Register user</h3>
+            
+             <p>
+                <h:outputLabel for="regUserName" value="User Name: "/>
+                <h:inputText id="regUserName" value="#{userManager.regUserName}">
+                    <f:validateRequired/>
+                </h:inputText>
+            </p>
+            <p>
+                <h:outputLabel for="regPassword" value="Password: "/>
+                <h:inputSecret id="regPassword" value="#{userManager.regPassword}">
+                    <f:validateRequired/>
+                
+                </h:inputSecret>
+            </p>
+            
+            <p>
+                <h:commandButton value="Register" action="#{userManager.UserRegister}"/>
+                <a href="startpage.xhtml">Login</a>
+                
+            </p>
+            <p>
+                <c:choose>
+                    <c:when test="#{userManager.registrationError}">
+                        <h4><h:outputText value="Registration Error! User name already exist"/></h4>
+                    </c:when>
+                </c:choose>
+                
+                <c:choose>
+                    <c:when test="#{userManager.userRegistrationSuccessful}">
+                        <h4><h:outputText value="Registration Successful"/></h4>
+                        <h4>You can login <a href="startpage.xhtml">Login</a></h4>
+                    </c:when>
+                </c:choose>
+            </p>
+            <hr/>
+        </h:form>
+    </h:body>
+</html>
+

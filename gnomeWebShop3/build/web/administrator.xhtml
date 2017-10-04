@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Administrator page</title>
+    </h:head>
+    <h:body>
+       <h4>Welcome <h:outputText value="#{userManager.userName}"/> </h4>
+       <h:form>
+           <h:commandButton value="Display gnomes" action="#{userManager.displayItems}"/>  
+           <h:commandButton value="Logout" action="#{userManager.LogOut}"/>
+      </h:form>   
+          <c:choose>
+            <c:when test="#{userManager.displayItemTrue}">
+               <h:dataTable value="#{userManager.list}" var ="o">
+                 <h:column>
+                     <f:facet name="header">G.Name</f:facet>
+                     #{o.gnomeName}
+                 </h:column>
+                 <h:column>
+                     <f:facet name="header">G.Price</f:facet>
+                     #{o.gnomePrice}
+                 </h:column>
+                 <h:column>
+                     <f:facet name="header">G.Unit</f:facet>
+                     #{o.gnomeUnit}
+                 </h:column>
+                </h:dataTable>
+                
+                <hr/>
+            </c:when>
+              
+              
+          </c:choose>
+          <hr/>
+          
+          <h4>Add new gnome to inventory </h4>
+          <hr/>
+          <h:form>
+           <h:outputLabel for="newGnomeName" value="Gnome Name: "/>
+                <h:inputText id="newGnomeName" value="#{userManager.newGnomeName}">
+                    <f:validateRequired/>
+                </h:inputText>
+                <h:outputLabel for="newGnomePrice" value="Gnome price: "/>
+                <h:inputText id="newGnomePrice" value="#{userManager.newGnomePrice}">
+                    <f:validateDoubleRange minimum="0.0002"/>
+                </h:inputText>
+                <h:outputLabel for="newGnomeUnits" value="Number of units: "/>
+                <h:inputText id="newGnomeUnits" value="#{userManager.newGnomeUnit}">
+                    <f:validateLongRange minimum="1"/>
+                </h:inputText>
+                <h:commandButton value="Add to Inventory" action="#{userManager.addToInventory}"/>
+                <c:choose>
+                    <c:when test="#{userManager.newgnomeAddedError}">
+                        <h4><h:outputText value="Error: Gnome name already exist!"/></h4>
+                    </c:when>
+                </c:choose>
+                <c:choose>
+                    <c:when test="#{userManager.newgnomeAddedSuccess}">
+                        <h4><h:outputText value="The Gnome is added successfully to inventory!"/></h4>
+                    </c:when>
+                </c:choose>
+          <hr/>
+       </h:form>
+          <h:form>
+              <h4>Delete gnome from inventory </h4>
+              <hr/>
+              <h:outputLabel for="gnomeList" value="Gnome: "/>
+                <h:selectOneMenu value="#{userManager.selectedGnome}" id="gnomeList">
+   			<f:selectItems value="#{userManager.list}" var="c"
+   			itemLabel="#{c.gnomeName}" itemValue="#{c.gnomeName}" />
+   		</h:selectOneMenu>
+              <h:commandButton value="Delete from Inventory" action="#{userManager.deleteFromInventory}"/>
+              <c:choose>
+                    <c:when test="#{userManager.deleteInventorySuccess}">
+                        <h4><h:outputText value="The Gnome is deleted successfully from inventory!"/></h4>
+                    </c:when>
+                </c:choose>
+              <hr/>
+          </h:form>
+          
+          <h:form>
+              <h4>Update gnome unit in inventory </h4>
+              <hr/>
+              <h:outputLabel for="gnomeList2" value="Gnome: "/>
+                <h:selectOneMenu value="#{userManager.updateSelectedGnome}" id="gnomeList2">
+   			<f:selectItems value="#{userManager.list}" var="c"
+   			itemLabel="#{c.gnomeName}" itemValue="#{c.gnomeName}" />
+   		</h:selectOneMenu>
+              <h:outputLabel for="udateGnomeUnits" value="Number of units: "/>
+                <h:inputText id="udateGnomeUnits" value="#{userManager.updateSelectedGnomeUnit}">
+                    <f:validateLongRange minimum="1"/>
+                </h:inputText>
+              <h:commandButton value="Udate unit" action="#{userManager.updateUnitInInventory}"/>
+              <c:choose>
+                    <c:when test="#{userManager.updateInventoryUnitSuccess}">
+                        <h4><h:outputText value="The Gnome unit is added  successfully to inventory!"/></h4>
+                    </c:when>
+                </c:choose>
+              <hr/>
+          </h:form>
+          <h:form>
+              <h4>Bane user </h4>
+              <hr/>
+              <h:outputLabel for="userList" value="User: "/>
+                <h:selectOneMenu value="#{userManager.baneSelectedUser}" id="userList">
+   			<f:selectItems value="#{userManager.listUser}" var="c"
+   			itemLabel="#{c.userName}" itemValue="#{c.userName}" />
+   		</h:selectOneMenu>
+              
+              <h:commandButton value="Ban user" action="#{userManager.banUser}"/>
+              <c:choose>
+                    <c:when test="#{userManager.userBanedSuccess}">
+                        <h4><h:outputText value="The user has been banned!"/></h4>
+                    </c:when>
+                </c:choose>
+              <hr/>
+          </h:form>
+    </h:body>
+</html>
+
